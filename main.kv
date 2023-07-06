@@ -1,0 +1,155 @@
+#transition:sm.FadeTransition(duration=.0)
+
+ScreenManager
+    id:manager
+    MDScreen:
+        name:"home"
+        MDBoxLayout:
+            orientation: "vertical"
+            MDToolbar:
+                title: "Attendance"
+                specific_text_color:78/255, 82/255, 84/255, 1
+                md_bg_color:1, 1, 1, 1
+            MDTabs:
+                allow_stretch:False
+                background_color:1, 1, 1, 1
+                indicator_color:36/255, 146/255, 255/255, 1
+                tab_hint_x:True
+                text_color_active:78/255, 82/255, 84/255, 1
+                text_color_normal:.5, .5, .5, 1
+
+                Tab:
+                    title: "Present"
+                    FloatLayout:
+                        RecycleView:
+                            id: studs
+                            key_viewclass: 'viewclass'
+                            key_size: 'height'
+                            pos_hint:{"top":.85}
+                            RecycleBoxLayout:
+                                id:wali
+                                spacing:dp(4)
+                                padding: dp(10)
+                                default_size: None, dp(55)
+                                default_size_hint: 1, None
+                                size_hint_y: None
+                                height: self.minimum_height
+                                orientation: 'vertical'
+                        MDFillRoundFlatIconButton:
+                            icon: "arrow-down"
+                            text: "Export to Excel"
+                            pos_hint:{'center_x':.5, 'center_y':.91}
+
+
+
+                Tab:
+                    title: "Absent"
+                    FloatLayout:
+                        RecycleView:
+                            id: absent
+                            key_viewclass: 'viewclass'
+                            key_size: 'height'
+                            pos_hint:{"top":.99}
+                            RecycleBoxLayout:
+                                id:wali
+                                spacing:dp(4)
+                                padding: dp(10)
+                                default_size: None, dp(55)
+                                default_size_hint: 1, None
+                                size_hint_y: None
+                                height: self.minimum_height
+                                orientation: 'vertical'
+
+
+    MDScreen:
+        name:'register'
+        FloatLayout:
+            orientation:'vertical'
+            RecycleView:
+                id: attend
+                key_viewclass: 'viewclass'
+                key_size: 'height'
+                pos_hint:{"top":.99}
+                RecycleBoxLayout:
+                    id:wali
+                    spacing:dp(4)
+                    padding: dp(10)
+                    default_size: None, dp(55)
+                    default_size_hint: 1, None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    orientation: 'vertical'
+            MDFillRoundFlatButton:
+                text: "Update Attendance"
+                size_hint: .4, .06
+                pos_hint:{'center_x':.5, 'center_y':.1}
+                md_bg_color: 83 / 225, 186 / 225, 115 / 225, 1
+                on_release:
+                    app.attendance()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Student@MDBoxLayout>:
+    radius:9
+    adaptive_height:True
+    name:""
+    pos_x: .55
+    pos_y: .7
+    height:dp(45)
+    md_bg_color:180/255, 180/255, 150/255, 1
+    pos_hint:{"center_x":.5,"top":.8}
+    orientation:"vertical"
+    FloatLayout:
+        MDLabel:
+            id:nm
+            halign:"left"
+            text:root.name
+            font_size:"20sp"
+            theme_text_color: "Custom"
+            text_color:26/255, 54/255, 113/255
+            pos_hint:{"center_x":root.pos_x,"center_y":root.pos_y}
+
+
+<Students@MDBoxLayout>:
+    radius:9
+    adaptive_height:True
+    name:""
+    registration:""
+    pos_x: .55
+    pos_y: .7
+    height:dp(40)
+    md_bg_color:180/255, 180/255, 150/255, 1
+    pos_hint:{"center_x":.5,"top":.8}
+    orientation:"vertical"
+    FloatLayout:
+        MDLabel:
+            id:nm
+            halign:"left"
+            text:root.name
+            font_size:"17sp"
+            theme_text_color: "Custom"
+            text_color:26/255, 54/255, 113/255
+            pos_hint:{"center_x":root.pos_x,"center_y":root.pos_y}
+        MDLabel:
+            halign:"left"
+            text:root.registration
+            font_size:"10sp"
+            theme_text_color: "Custom"
+            text_color:26/255, 54/255, 113/255
+            pos_hint:{"center_x":.58,"center_y":.3}
