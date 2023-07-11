@@ -3,7 +3,7 @@ from datetime import datetime
 
 class Fire_Base:
 
-    def present(self):
+    def present(self, date):
         if True:
             import firebase_admin
             firebase_admin._apps.clear()
@@ -13,7 +13,20 @@ class Fire_Base:
                 initialize_app(cred, {'databaseURL': 'https://farmzon-abdcb.firebaseio.com/'})
                 ref = db.reference('FingerPrint').child("Programs").child("BCICT").child("Attendance").child(
                     self.year()).child(
-                    "06_06").child("Present")
+                    date).child("Present")
+
+                return ref.get()
+
+    def month(self,):
+        if True:
+            import firebase_admin
+            firebase_admin._apps.clear()
+            from firebase_admin import credentials, initialize_app, db
+            if not firebase_admin._apps:
+                cred = credentials.Certificate("credential/farmzon-abdcb-c4c57249e43b.json")
+                initialize_app(cred, {'databaseURL': 'https://farmzon-abdcb.firebaseio.com/'})
+                ref = db.reference('FingerPrint').child("Programs").child("BCICT").child("Attendance").child(
+                    self.year())
 
                 return ref.get()
 
@@ -39,7 +52,7 @@ class Fire_Base:
             if not firebase_admin._apps:
                 cred = credentials.Certificate("credential/farmzon-abdcb-c4c57249e43b.json")
                 initialize_app(cred, {'databaseURL': 'https://farmzon-abdcb.firebaseio.com/'})
-                ref = db.reference('FingerPrint').child("Programs").child("Modules")
+                ref = db.reference('FingerPrint').child("Modules")
 
                 # Query for retailers in a specific location
                 lecture_codes = ref.order_by_child('lecture_name').equal_to(location).get()
@@ -147,6 +160,39 @@ class Fire_Base:
 
                 return data
 
+    def get_login(self, phone, name):
+        if True:
+            import firebase_admin
+            firebase_admin._apps.clear()
+            from firebase_admin import credentials, initialize_app, db
+            if not firebase_admin._apps:
+                cred = credentials.Certificate("credential/farmzon-abdcb-c4c57249e43b.json")
+                initialize_app(cred, {'databaseURL': 'https://farmzon-abdcb.firebaseio.com/'})
+                ref = db.reference('FingerPrint').child("lecture")
+
+                data = ref.get()
+
+                if phone in data:
+
+                    if name == data[phone]["name"]:
+                        return True
+                else:
+                    return False
+    def lecture(self, phone, name):
+        import firebase_admin
+        firebase_admin._apps.clear()
+        from firebase_admin import credentials, initialize_app, db
+        if not firebase_admin._apps:
+            cred = credentials.Certificate("credential/farmzon-abdcb-c4c57249e43b.json")
+            initialize_app(cred, {'databaseURL': 'https://farmzon-abdcb.firebaseio.com/'})
+            ref = db.reference('FingerPrint').child("lecture").child(phone)
+            ref.set(
+                {
+                    "user_phone": phone,
+                    "name": name,
+                }
+            )
+
     def year(self):
         current_time = str(datetime.now())
         date, time = current_time.strip().split()
@@ -161,4 +207,23 @@ class Fire_Base:
 
         return f"{m}_{d}"
 
-Fire_Base.Attend(Fire_Base())
+    def set_district(self, name, pas, phon, district):
+        if True:
+            import firebase_admin
+            firebase_admin._apps.clear()
+            from firebase_admin import credentials, initialize_app, db
+            if not firebase_admin._apps:
+                cred = credentials.Certificate("credential/farmzon-abdcb-c4c57249e43b.json")
+                initialize_app(cred, {'databaseURL': 'https://farmzon-abdcb.firebaseio.com/'})
+                ref = db.reference('Nida').child("Districts").child(phon)
+                ref.set(
+                    {
+                        "council_name": name,
+                        "council_phone": phon,
+                        "district_name": district,
+                        "council_password": pas
+
+                    }
+                )
+
+
