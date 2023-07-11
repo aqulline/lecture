@@ -22,6 +22,7 @@ from database import Fire_Base as FB
 if utils.platform != 'android':
     Window.size = [360, 640]
 
+
 class NumberField(MDTextField):
     pat = re.compile('[^0-9]')
 
@@ -41,9 +42,11 @@ class NumberField(MDTextField):
 
         return super(NumberField, self).insert_text(substring, from_undo=from_undo)
 
+
 class Modules(MDCard):
     date = StringProperty("")
     name = StringProperty("")
+
 
 class NumberOnlyField(MDTextField):
     pat = re.compile('[^0-9]')
@@ -59,6 +62,7 @@ class NumberOnlyField(MDTextField):
             s = ".".join([re.sub(pat, "", s) for s in substring.split(".", 1)])
 
         return super(NumberOnlyField, self).insert_text(s, from_undo=from_undo)
+
 
 class Tab(MDBoxLayout, MDTabsBase):
     pass
@@ -87,15 +91,13 @@ class MainApp(MDApp):
         pass
 
     def on_start(self):
-        #self.one()
+        # self.one()
         Clock.schedule_once(lambda x: self.register_check(), 1)
-        self.drop_week()
-        self.days()
 
 
     def display_Present(self):
         self.root.ids.studs.data = {}
-        self.present = FB.present(FB())
+
 
         if not self.present:
             self.root.ids.studs.data.append(
@@ -170,8 +172,6 @@ class MainApp(MDApp):
         if FB.get_login(FB(), phone, name):
             sm = self.root
             sm.current = "home"
-            self.display_Present()
-            self.display_absent()
             self.module(name)
         else:
             toast("Invalid login")
@@ -186,6 +186,7 @@ class MainApp(MDApp):
             self.module(name)
             self.remember_me(phone)
             self.screen_capture("enter")
+
     def phone_number_check_admin(self, phone):
         new_number = ""
         if phone != "" and len(phone) == 10:
@@ -203,7 +204,6 @@ class MainApp(MDApp):
                 return True
         else:
             toast("enter phone number!")
-
 
     def save_present(self, ):
         with open("present.xlsx", "w") as file:
@@ -242,7 +242,6 @@ class MainApp(MDApp):
         self.screens_size = len(self.screens) - 1
         self.current = self.screens[len(self.screens) - 1]
         self.screen_capture(self.current)
-
 
     def keyboard_hooker(self, *args):
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)
@@ -284,14 +283,19 @@ class MainApp(MDApp):
     def set_week(self, text_item):
         self.root.ids.week.text = text_item
         toast(text_item)
-        self.present(FB.present(FB(), text_item))
+        self.present = FB.present(FB(), text_item)
+        self.display_Present()
         self.week.dismiss()
 
     @mainthread
     def days(self):
+        self.week_days = []
         data = FB.month(FB())
-        for x,y in data.items():
+        for x, y in data.items():
+            print(x)
             self.week_days.append(x)
+        self.drop_week()
+        self.week.open()
 
     def remember_me(self, phone):
         with open("lecture.txt", "w") as fl:
@@ -306,5 +310,6 @@ class MainApp(MDApp):
         else:
             sm.current = "register"
             self.screen_capture("login")
+
 
 MainApp().run()
